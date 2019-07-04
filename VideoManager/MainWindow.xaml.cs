@@ -124,17 +124,15 @@ namespace VideoManager
                 var inputName = new InputName();
                 inputName.Title = "输入分类名";
                 inputName.ShowDialog();
-                var newId = await CreateNewCat(inputName.input.Text);
-                await SetVideoCat(img.VideoId, newId);
-                await LoadCats();
+                await CreateNewCat(inputName.input.Text);
+                await LoadAll();
                 return;
             }
 
             var catId = CatList.Where(p => p.Value == cat).Select(p => p.Key).FirstOrDefault();
             await SetVideoCat(img.VideoId, catId);
+            await LoadAll();
 
-            await LoadCats();
-            LoadCatUI();
             //(CatTab.Items[0] as TabItem).Focus();
         }
 
@@ -343,6 +341,7 @@ namespace VideoManager
 
             LoadImgContextMenu();
 
+            AllWarpPanel.Children.Clear();
             //在全部界面添加界面
             foreach (var video in Videos.Values)
             {
@@ -512,6 +511,7 @@ namespace VideoManager
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
+            Environment.Exit(0);
         }
 
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -588,18 +588,15 @@ namespace VideoManager
                 var inputName = new InputName();
                 inputName.Title = "输入标签名";
                 inputName.ShowDialog();
-                var newId = await CreateNewTag(inputName.input.Text);
-                await SetVideoTag(img.VideoId, newId);
-                await LoadTags();
-                LoadTagUI();
+                await CreateNewTag(inputName.input.Text);
+                await LoadAll();
                 return;
             }
 
             var tagId = TagList.Where(p => p.Value == tag).Select(p => p.Key).FirstOrDefault();
             await SetVideoTag(img.VideoId, tagId);
 
-            await LoadTags();
-            LoadTagUI();
+            await LoadAll();
             //(TagTab.Items[0] as TabItem).Focus();
         }
 

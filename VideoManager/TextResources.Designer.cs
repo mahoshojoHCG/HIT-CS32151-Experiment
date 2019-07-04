@@ -66,7 +66,15 @@ namespace VideoManager {
         ///Newtonsoft.Json
         ///https://github.com/JamesNK/Newtonsoft.Json
         ///协议：The MIT License (MIT)
-        /// 的本地化字符串。
+        ///FFmpeg.NET
+        ///https://github.com/cmxl/FFmpeg.NET
+        ///协议：The MIT License (MIT)
+        ///FFmpeg
+        ///协议：LGPLv2.1 license
+        ///图标
+        ///Raisul Hadi
+        ///https://www.iconfinder.com/Raisul
+        ///协议：Creative Commons 的本地化字符串。
         /// </summary>
         internal static string Copyright {
             get {

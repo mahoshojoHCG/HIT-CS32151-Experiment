@@ -37,6 +37,9 @@
   <PropertyGroup>
     <StartupObject>VideoManager.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FFmpeg.NET, Version=3.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\xFFmpeg.NET.3.3.3\lib\netstandard2.0\FFmpeg.NET.dll</HintPath>
@@ -160,7 +163,9 @@
   <ItemGroup>
     <Resource Include="PlaceHolderImg.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ffmpeg.exe" />
   </ItemGroup>
