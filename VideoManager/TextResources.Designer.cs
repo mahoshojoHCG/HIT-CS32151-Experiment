@@ -66,25 +66,11 @@ namespace VideoManager {
         ///Newtonsoft.Json
         ///https://github.com/JamesNK/Newtonsoft.Json
         ///协议：The MIT License (MIT)
-        ///图片
-        ///https://travelcoffeebook.com/
-        ///使用CC0授权 的本地化字符串。
+        /// 的本地化字符串。
         /// </summary>
         internal static string Copyright {
             get {
                 return ResourceManager.GetString("Copyright", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 &lt;Canvas Width=&quot;240&quot; Height=&quot;180&quot;&gt;
-        ///                        &lt;Image Width=&quot;220&quot; Canvas.Top=&quot;0&quot; Height=&quot;160&quot; Source=&quot;PlaceHolderImg.jpg&quot; &gt;&lt;/Image&gt;
-        ///                        &lt;TextBlock Canvas.Bottom=&quot;0&quot; Width=&quot;220&quot; Text=&quot;Place Holder&quot; TextWrapping=&quot;NoWrap&quot; TextAlignment=&quot;Center&quot;&gt;&lt;/TextBlock&gt;
-        ///                    &lt;/Canvas&gt; 的本地化字符串。
-        /// </summary>
-        internal static string IWT {
-            get {
-                return ResourceManager.GetString("IWT", resourceCulture);
             }
         }
     }

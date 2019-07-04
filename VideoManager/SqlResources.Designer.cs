@@ -77,7 +77,7 @@ namespace VideoManager {
         /// <summary>
         ///   查找类似 CREATE TABLE dbo.Tag
         ///(
-        ///    TagId INT NOT NULL PRIMARY KEY, -- primary key column
+        ///    TagId INT IDENTITY(1,1) NOT NULL PRIMARY KEY, -- primary key column
         ///    TagName [NVARCHAR](50) NOT NULL
         ///); 的本地化字符串。
         /// </summary>

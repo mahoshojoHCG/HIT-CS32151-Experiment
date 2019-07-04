@@ -5,51 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VideoManager"
         mc:Ignorable="d"
-        Title="视频通" Height="450" Width="810" MinHeight="450" MinWidth="810" FontSize="18" FontFamily="Sarasa Gothic SC" Closed="MainWindow_OnClosed" Loaded="MainWindow_OnLoaded">
+        Title="视频通" Height="450" Width="810" MinHeight="450" MinWidth="810" FontSize="18" FontFamily="Sarasa Gothic SC"
+        Closed="MainWindow_OnClosed" Loaded="MainWindow_OnLoaded">
     <TabControl Name="RootTabControl" TabStripPlacement="Left">
         <TabItem Name="AllTab" Header="全部">
             <ScrollViewer AllowDrop="True" Drop="AllWarpPanel_OnDrop">
-                <WrapPanel Name="AllWarpPanel">
-
-                </WrapPanel>
+                <WrapPanel Name="AllWarpPanel" />
             </ScrollViewer>
         </TabItem>
         <TabItem Header="标签">
-            <TabControl Name="TabTab" TabStripPlacement="Left">
-
-            </TabControl>
+            <TabControl Name="TagTab" TabStripPlacement="Left" />
         </TabItem>
         <TabItem Header="分类">
-            <TabControl Name="CatTab" TabStripPlacement="Left">
-
-            </TabControl>
+            <TabControl Name="CatTab" TabStripPlacement="Left" />
         </TabItem>
         <TabItem Header="设置">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110*" />
+                    <ColumnDefinition Width="639*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="28*"/>
-                    <RowDefinition Height="28*"/>
-                    <RowDefinition Height="28*"/>
-                    <RowDefinition Height="28*"/>
-                    <RowDefinition Height="305*"/>
+                    <RowDefinition Height="28*" />
+                    <RowDefinition Height="28*" />
+                    <RowDefinition Height="28*" />
+                    <RowDefinition Height="28*" />
+                    <RowDefinition Height="305*" />
                 </Grid.RowDefinitions>
-                <CheckBox Name="ExternPlayBox" Click="ExternPlayBox_OnClick" Content="使用外部播放器而不是在程序内播放" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" />
-
+                <Button Content="一键删库" Click="OneKeyDelete" />
             </Grid>
         </TabItem>
         <TabItem Header="关于">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="67*"/>
-                    <RowDefinition Height="350*"/>
+                    <RowDefinition Height="67*" />
+                    <RowDefinition Height="350*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="157*"/>
-                    <ColumnDefinition Width="582*"/>
+                    <ColumnDefinition Width="157*" />
+                    <ColumnDefinition Width="582*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Margin="10,8,0.2,0" TextWrapping="Wrap" FontSize="36" FontFamily="黑体" Text="视频通" VerticalAlignment="Top" Height="49"/>
-                <TextBlock Name="CopyrightBox" Margin="10,10,10,10" Grid.Row="1" TextWrapping="Wrap" Text="Place Holder Place Holder" VerticalAlignment="Top" Grid.ColumnSpan="2"
-                           Grid.Column="0" Height="330"/>
+                <TextBlock Margin="10,8,0.2,0" TextWrapping="Wrap" FontSize="36" FontFamily="黑体" Text="视频通"
+                           VerticalAlignment="Top" Height="49" />
+                <TextBlock Name="CopyrightBox" Margin="10,10,10,10" Grid.Row="1" TextWrapping="Wrap"
+                           Text="Place Holder Place Holder" VerticalAlignment="Top" Grid.ColumnSpan="2"
+                           Grid.Column="0" Height="330" />
 
             </Grid>
         </TabItem>

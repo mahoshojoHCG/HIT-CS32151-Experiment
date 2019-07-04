@@ -123,14 +123,6 @@
 Newtonsoft.Json
 https://github.com/JamesNK/Newtonsoft.Json
 协议：The MIT License (MIT)
-图片
-https://travelcoffeebook.com/
-使用CC0授权</value>
-  </data>
-  <data name="IWT" xml:space="preserve">
-    <value>&lt;Canvas Width="240" Height="180"&gt;
-                        &lt;Image Width="220" Canvas.Top="0" Height="160" Source="PlaceHolderImg.jpg" &gt;&lt;/Image&gt;
-                        &lt;TextBlock Canvas.Bottom="0" Width="220" Text="Place Holder" TextWrapping="NoWrap" TextAlignment="Center"&gt;&lt;/TextBlock&gt;
-                    &lt;/Canvas&gt;</value>
+</value>
   </data>
 </root>

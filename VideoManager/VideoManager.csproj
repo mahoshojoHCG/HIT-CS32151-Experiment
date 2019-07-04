@@ -66,6 +66,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="InputName.xaml.cs">
+      <DependentUpon>InputName.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InputSQLString.xaml.cs">
       <DependentUpon>InputSQLString.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,11 @@
       <DependentUpon>TextResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Video.cs" />
+    <Compile Include="VideoImage.cs" />
+    <Page Include="InputName.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="InputSQLString.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

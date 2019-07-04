@@ -1,26 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Newtonsoft.Json;
-using Path = System.IO.Path;
 
 namespace VideoManager
 {
     /// <summary>
-    /// Login.xaml 的交互逻辑
+    ///     Login.xaml 的交互逻辑
     /// </summary>
     public partial class Login : Window
     {
@@ -33,10 +22,17 @@ namespace VideoManager
         {
             var connection = new SqlConnection(App.Config.SqlConnectionString);
             await connection.OpenAsync();
-            await new SqlCommand(SqlResources.CreateCatTable, connection).ExecuteNonQueryAsync();
-            await new SqlCommand(SqlResources.CreateTagTable, connection).ExecuteNonQueryAsync();
-            //await new SqlCommand(SqlResources.CreateUserTable, connection).ExecuteNonQueryAsync();
-            await new SqlCommand(SqlResources.CreateVideosTale, connection).ExecuteNonQueryAsync();
+            try
+            {
+                await new SqlCommand(SqlResources.CreateCatTable, connection).ExecuteNonQueryAsync();
+                await new SqlCommand(SqlResources.CreateTagTable, connection).ExecuteNonQueryAsync();
+                await new SqlCommand(SqlResources.CreateVideosTale, connection).ExecuteNonQueryAsync();
+            }
+            catch
+            {
+                //ignored
+            }
+
             connection.Close();
         }
 
@@ -45,9 +41,11 @@ namespace VideoManager
             var appDataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Video Manager");
             var tempDir = Path.Combine(appDataDir, "temp");
+            Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Video Manager\\temp\\").ToList().ForEach(File.Delete);
             Directory.CreateDirectory(appDataDir);
             Directory.CreateDirectory(tempDir);
-            File.WriteAllBytes(Path.Combine(appDataDir,"ffmpeg.exe"),Resource.ffmpeg);
+            File.WriteAllBytes(Path.Combine(appDataDir, "ffmpeg.exe"), Resource.ffmpeg);
             await Task.Delay(1);
             IsEnabled = false;
             while (!File.Exists("config.json"))
@@ -56,7 +54,7 @@ namespace VideoManager
                 new InputSQLString().ShowDialog();
                 if (!string.IsNullOrWhiteSpace(App.Config.SqlConnectionString))
                 {
-                    File.WriteAllText("config.json",JsonConvert.SerializeObject(App.Config,Formatting.Indented));
+                    File.WriteAllText("config.json", JsonConvert.SerializeObject(App.Config, Formatting.Indented));
                     await InitDatabase();
                 }
             }

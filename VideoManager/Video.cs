@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VideoManager
+﻿namespace VideoManager
 {
     public class Video
     {
@@ -13,6 +7,5 @@ namespace VideoManager
         public string VideoName { get; set; }
         public int VideoCat { get; set; }
         public int VideoTag { get; set; }
-
     }
 }
