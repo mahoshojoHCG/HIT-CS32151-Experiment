@@ -13,5 +13,7 @@ namespace VideoManager
     /// </summary>
     public partial class App : Application
     {
+        public static Config Config;
     }
+
 }

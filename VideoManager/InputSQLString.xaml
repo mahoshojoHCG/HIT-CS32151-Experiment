@@ -1,0 +1,14 @@
+﻿<Window x:Class="VideoManager.InputSQLString"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VideoManager"
+        mc:Ignorable="d"
+        Title="输入SQL连接字符串" Height="94" Width="400" MinHeight='94' MaxHeight="94" MaxWidth="400" MinWidth="400" ShowInTaskbar="False">
+    <Grid>
+        <TextBox Name="input" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" TextWrapping="Wrap" Text="Server=localhost;Database=Video;Trusted_Connection=True;" VerticalAlignment="Top" Width="375"/>
+        <Button Content="好" HorizontalAlignment="Left" Margin="313,35,0,0" VerticalAlignment="Top" Width="72" Height="21" Click="Button_Click"/>
+
+    </Grid>
+</Window>
