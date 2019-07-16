@@ -425,6 +425,7 @@ namespace VideoManager
             imgContextMenu.StaysOpen = true;
             var menuItem = new MenuItem {Header = "播放"};
             menuItem.Click += PlayVideoClick;
+            imgContextMenu.Items.Clear();
             imgContextMenu.Items.Add(menuItem);
             imgContextMenu.Items.Add(catItem);
             imgContextMenu.Items.Add(tagItem);

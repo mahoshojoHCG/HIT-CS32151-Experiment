@@ -1,0 +1,154 @@
+﻿@page
+@model VideoManagerPlus.Pages.VideoModel
+@{
+    ViewData["Title"] = "视频播放";
+}
+
+<script type="text/javascript">
+    function reloadBtn() {
+        var button = document.getElementById("addPreferButton");
+        if (preferVideo.hasItem('@Model.CurrentVideo.Id')) {
+            button.onclick = function() {
+                $('#confirmDeleteModal').modal('show');
+            }
+            button.innerText = "删除收藏";
+        } else {
+            button.onclick = function() {
+                $('#confirmModal').modal('show');
+            }
+            button.innerText = "收藏视频";
+        }
+    }
+    $(document).ready(function() {
+        reloadBtn();
+    });
+</script>
+
+<div id="modals">
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">确认添加</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    是否添加@(Model.CurrentVideo.VideoName)到收藏？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="confirmAdd('@Model.CurrentVideo.Id')">是</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">否</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">确认删除</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    是否将@(Model.CurrentVideo.VideoName)从收藏中删除？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete('@Model.CurrentVideo.Id')">是</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">否</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">提示</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="notificationModalContent">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="$('#notificationModal').modal('hide')">好</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col embed-responsive">
+            <h2>
+                @Model.CurrentVideo.VideoName  <a asp-page="/edit" asp-route-id="@Model.CurrentVideo.Id" class="far fa-edit"></a>
+            </h2>
+            
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col">
+            <h6>
+                标签：<a asp-page="/Tag" asp-route-id="@Model.CurrentVideo.VideoTag" class="badge badge-pill badge-primary">@Model.TagName</a>
+                分类：<a asp-page="/Cat" asp-route-id="@Model.CurrentVideo.VideoCat" class="badge badge-pill badge-info">@Model.CatName</a>
+            </h6>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col">
+            <div class="embed-responsive embed-responsive-16by9">
+                <video class="embed-responsive-item" src="/api/Video/GetVideoFile?id=@Model.CurrentVideo.Id" controls="controls"></video>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-lg-2 col-xl-2" style="margin-bottom: 10px">
+            <div class="embed-responsive">
+                <button type="button" class="btn btn-primary" onclick="window.location.href = '/api/Video/GetVideoFile?id=@Model.CurrentVideo.Id'">下载视频</button>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-2 col-xl-2" style="margin-bottom: 10px">
+            <div class="embed-responsive">
+                <button id="addPreferButton" type="button" class="btn btn-warning" onclick="$('#confirmModal').modal('show')">收藏视频</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function confirmAdd(videoId) {
+        $('#confirmModal').modal('hide');
+        if (preferVideo.addItem(videoId)) {
+            document.getElementById("notificationModalContent").innerText = "添加成功";
+            $('#notificationModal').modal('show');
+            reloadBtn();
+        } else {
+            document.getElementById("notificationModalContent").innerText = "添加失败";
+            $('#notificationModal').modal('show');
+        }
+        window.onload();
+    }
+
+    function confirmDelete(videoId) {
+        $('#confirmDeleteModal').modal('hide');
+        if (preferVideo.deleteItem(videoId)) {
+            document.getElementById("notificationModalContent").innerText = "删除成功";
+            $('#notificationModal').modal('show');
+            reloadBtn();
+        } else {
+            document.getElementById("notificationModalContent").innerText = "删除失败";
+            $('#notificationModal').modal('show');
+        }
+    }
+</script>

@@ -1,0 +1,102 @@
+﻿@page
+@model VideoManagerPlus.Pages.PreferModel
+@{
+    ViewData["Title"] = "收藏视频";
+    ViewData["Current"] = "Prefer";
+
+}
+
+<div id="modals">
+
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">确认删除</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmDeleteContent">
+                    hold
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteOkButton">是</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">否</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" on>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">提示</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="notificationModalContent">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="notificationOkButton" onclick="$('#notificationModal').modal('hide')">好</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <h1>收藏视频</h1>
+    <h5>下面是所有收藏的视频</h5>
+    @if (Model.PreferVideos == null || Model.PreferVideos.Count == 0)
+    {
+        <h6 class="text-info">看起来还没有收藏的视频，去<a asp-page="/Index">添加一些</a>？</h6>
+    }
+    else
+    {
+        <div class="row" id="baseRow">
+            @foreach (var vid in Model.PreferVideos)
+            {
+                <div class="col-md-6 col-lg-4 col-xl-3" id="vid_col_@vid.Id" style="margin-bottom: 10px">
+                    <div class="card">
+                        <img class="card-img-top" src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                        <div class="card-body">
+                            <h5 class="card-title single-line">@vid.VideoName</h5>
+                            <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>
+                            @*<button class="btn btn-danger" onclick="confirmRemovePrefer('@vid.Id','@vid.VideoName')">移除收藏</button>*@
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    function confirmRemovePrefer(videoId, videoName) {
+        document.getElementById("confirmDeleteContent").innerText = "是否将" + videoName + "从收藏中删除？";
+        $('#confirmDeleteOkButton').click(function () {
+            $('#confirmDeleteModal').modal('hide');
+            deletePrefer(videoId);
+        });
+        $('#confirmDeleteModal').modal('show');
+    }
+
+    function deletePrefer(videoId) {
+        if (preferVideo.deleteItem(videoId)) {
+            document.getElementById("notificationModalContent").innerText = "删除成功";
+            document.getElementById("notificationOkButton").onclick = function() {
+                document.getElementById("vid_col_" + videoId).remove();
+                $('#notificationModal').modal('hide');
+            };
+            $('#notificationModal').modal('show');
+        } else {
+            document.getElementById("notificationModalContent").innerText = "删除失败";
+            $('#notificationModal').modal('show');
+        }
+    }
+</script>

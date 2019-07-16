@@ -1,0 +1,139 @@
+﻿@page
+@model VideoManagerPlus.Pages.EditModel
+@{
+    ViewData["Title"] = "修改视频信息";
+}
+
+<h2>编辑@(Model.CurrentVideo.VideoName)</h2>
+
+<div id="modals">
+
+    <div class="modal fade" id="newTagModal" tabindex="-1" role="dialog" aria-labelledby="newTagModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newTagModalLabel">添加新的标签</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-form-label">新标签名称</label>
+                            <input type="text" class="form-control" id="newTagName">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddTag">添加标签</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="newCatModal" tabindex="-1" role="dialog" aria-labelledby="newTagModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newCatModalLabel">添加新的分类</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="col-form-label">新分类名称</label>
+                            <input type="text" class="form-control" id="newCatName">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddCat">添加分类</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<form method="post">
+    <div class="form-row">
+        <div class="input-group mb-3 col-11">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputNewName">新名称</label>
+            </div>
+            <input type="text" asp-for="NewName" required="required" class="form-control" placeholder="请输入一个新名称" value="@Model.CurrentVideo.VideoName" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="input-group mb-3 col-11">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputCat">分类</label>
+            </div>
+            <select asp-for="NewVideoCat" class="custom-select" id="inputCat">
+                <option value="0" selected="@(Model.CurrentVideo.VideoCat == 0 ? " selected" : null)">无分类</option>
+                @foreach (var cat in Model.AllCats)
+                {
+                <option selected="@(Model.CurrentVideo.VideoCat == cat.Id ? " selected" : null)" value="@cat.Id">@cat.CatName</option>
+                }
+            </select>
+        </div>
+        <div class="col-1">
+            <button type="button" id="addCatButton" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="input-group mb-3 col-11">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputTag">标签</label>
+            </div>
+            <select asp-for="NewVideoTag" class="custom-select" id="inputTag">
+                <option value="0" selected="@(Model.CurrentVideo.VideoTag == 0 ? " selected" : null)">无标签</option>
+                @foreach (var tag in Model.AllTags)
+                {
+                <option selected="@(Model.CurrentVideo.VideoTag == tag.Id ? " selected" : null)" value="@tag.Id">@tag.TagName</option>
+                }
+            </select>
+        </div>
+        <div class="col-1">
+            <button type="button" id="addTagButton" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">更新</button>
+</form>
+
+
+<script type="text/javascript">
+    $("#addTagButton").click(function () {
+        $("#newTagModal").modal("show");
+    });
+    $("#confirmAddTag").click(function () {
+        if (!$("#newTagName").val())
+            return;
+        $.post("/api/Video/AddTag", { tagName: $("#newTagName").val() })
+            .done(function (data) {
+                $("#inputTag").append(new Option($("#newTagName").val(), data.tagName));
+                $("#newTagModal").modal("hide");
+            });
+    });
+
+    $("#addCatButton").click(function () {
+        $("#newCatModal").modal("show");
+    });
+    $("#confirmAddCat").click(function () {
+        if (!$("#newCatName").val())
+            return;
+        $.post("/api/Video/AddCat", { catName: $("#newCatName").val() })
+            .done(function (data) {
+                $("#inputCat").append(new Option($("#newCatName").val(), data.catName));
+                $("#newCatModal").modal("hide");
+            });
+    });
+</script>

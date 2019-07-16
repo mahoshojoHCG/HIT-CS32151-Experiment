@@ -1,0 +1,27 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "全部视频";
+    ViewData["Current"] = "Index";
+
+}
+
+<div>
+    <h1>The World</h1>
+    <h5>下面是所有视频</h5>
+    <div class="row">
+        @foreach (var vid in Model.AllVideos)
+        {
+            <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 10px">
+                <div class="card">
+                    <img class="card-img-top"  src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                    <div class="card-body">
+                        <h5 class="card-title single-line">@vid.VideoName</h5>
+                        <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

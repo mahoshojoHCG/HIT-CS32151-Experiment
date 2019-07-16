@@ -1,0 +1,131 @@
+﻿@page
+@model VideoManagerPlus.Pages.CatModel
+@{
+    ViewData["Title"] = "全部分类";
+    ViewData["Current"] = "Cat";
+
+}
+<h5>全部标签</h5>
+
+@if (Model.QueryCat == null)
+{
+    <div class="accordion" id="accordionTag">
+
+        <div class="card">
+            <div class="card-header" id="heading_0">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_0" aria-expanded="False" aria-controls="collapse_0">
+                        未分类
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse_0" class="collapse" aria-labelledby="heading_0" data-parent="#accordionTag">
+                <div class="row card-body">
+                    @foreach (var vid in Model.AllVideos.FindAll(vid => vid.VideoCat == 0))
+                    {
+                        <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 10px">
+                            <div class="card">
+                                <img class="card-img-top" src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                                <div class="card-body single-line">
+                                    <h5 class="card-title">@vid.VideoName</h5>
+                                    <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @foreach (var cat in Model.AllCats)
+        {
+            <div class="card">
+                <div class="card-header" id="heading_@cat.Id">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_@cat.Id" aria-expanded="False" aria-controls="collapse_@cat.Id">
+                            @cat.CatName
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapse_@cat.Id" class="collapse" aria-labelledby="heading_@cat.Id" data-parent="#accordionTag">
+                    <div class="row card-body">
+                        @foreach (var vid in Model.AllVideos.FindAll(vid => vid.VideoCat == cat.Id))
+                        {
+                            <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 10px">
+                                <div class="card">
+                                    <img class="card-img-top" src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                                    <div class="card-body">
+                                        <h5 class="card-title single-line">@vid.VideoName</h5>
+                                        <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="accordion" id="accordionTag">
+
+        <div class="card">
+            <div class="card-header" id="heading_0">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_0" aria-expanded="@(Model.QueryCat.Id == 0)" aria-controls="collapse_0">
+                        未分类
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse_0" class="collapse @(Model.QueryCat.Id == 0 ? "show" : "")" aria-labelledby="heading_0" data-parent="#accordionTag">
+                <div class="row card-body">
+                    @foreach (var vid in Model.AllVideos.FindAll(vid => vid.VideoCat == 0))
+                    {
+                        <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 10px">
+                            <div class="card">
+                                <img class="card-img-top" src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                                <div class="card-body">
+                                    <h5 class="card-title">@vid.VideoName</h5>
+                                    <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @foreach (var cat in Model.AllCats)
+        {
+            <div class="card">
+                <div class="card-header" id="heading_@cat.Id">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_@cat.Id" aria-expanded="@(cat.Id == Model.QueryCat.Id)" aria-controls="collapse_@cat.Id">
+                            @cat.CatName
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapse_@cat.Id" class="collapse @(cat.Id == Model.QueryCat.Id ? "show" : "")" aria-labelledby="heading_@cat.Id" data-parent="#accordionTag">
+                    <div class="row card-body">
+                        @foreach (var vid in Model.AllVideos.FindAll(vid => vid.VideoCat == cat.Id))
+                        {
+                            <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 10px">
+                                <div class="card">
+                                    <img class="card-img-top" src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@vid.VideoName</h5>
+                                        <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
