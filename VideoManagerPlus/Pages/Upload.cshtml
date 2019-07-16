@@ -105,7 +105,7 @@
     </div>
 
     <div for="fileInput" class="form-group">
-        <input id="fileInput" name="fileInput" type="file" data-preview-file-type="text" lang="zh">
+        <input id="fileInput" name="fileInput" type="file" data-preview-file-type="text" lang="zh" multiple/>
     </div>
 
 </form>
@@ -114,16 +114,14 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $("#fileInput").fileinput({
-            'showUploaded': false,
+            'showUpload': true,
             'theme': 'fa',
             'language': 'zh',
             'uploadUrl': '/api/Video/Upload',
             'name': 'file',
             'allowedFileExtensions': ['mp4', 'mkv', 'avi', 'flv'],
-            'maxFileCount': 0,
             'showClose': false,
             'showCancel': false,
-            'showDelete': false,
             'uploadExtraData': {
                 'videoCat': '0',
                 'videoTag': '0'

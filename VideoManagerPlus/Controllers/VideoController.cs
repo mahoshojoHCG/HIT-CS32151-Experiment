@@ -53,9 +53,9 @@ namespace VideoManagerPlus.Controllers
                 $"Video Manager\\temp\\{Guid.NewGuid()}.jpg");
             var input = new MediaFile(path);
             var output = new MediaFile(thumbnail);
-            var ffmpeg = new Engine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "Video Manager\\ffmpeg.exe"));
-            var options = new ConversionOptions {Seek = TimeSpan.FromSeconds(10)};
+            var ffmpeg = new Engine(Path.Combine(Directory.GetCurrentDirectory(),
+                "ffmpeg.exe"));
+            var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(10) };
             await ffmpeg.GetThumbnailAsync(input, output, options);
             var buf = System.IO.File.ReadAllBytes(thumbnail);
             System.IO.File.Delete(thumbnail);
@@ -84,7 +84,7 @@ namespace VideoManagerPlus.Controllers
             var insert = new SqlCommand("INSERT INTO[dbo].[Tag]([TagName]) Values(@TagName)", connection);
             insert.Parameters.Add("@TagName", SqlDbType.NVarChar).Value = tagName;
             await insert.ExecuteNonQueryAsync();
-            var response = JsonConvert.SerializeObject(new {tagId = await fetch.ExecuteScalarAsync()});
+            var response = JsonConvert.SerializeObject(new { tagId = await fetch.ExecuteScalarAsync() });
             connection.Close();
             return Ok(response);
         }
@@ -110,7 +110,7 @@ namespace VideoManagerPlus.Controllers
             var insert = new SqlCommand("INSERT INTO[dbo].[Cat]([CatName]) Values(@CatName)", connection);
             insert.Parameters.Add("@CatName", SqlDbType.NVarChar).Value = catName;
             await insert.ExecuteNonQueryAsync();
-            var response = JsonConvert.SerializeObject(new {catId = await fetch.ExecuteScalarAsync()});
+            var response = JsonConvert.SerializeObject(new { catId = await fetch.ExecuteScalarAsync() });
             connection.Close();
             return Ok(response);
         }
@@ -126,11 +126,11 @@ namespace VideoManagerPlus.Controllers
             {
                 var vid = new Video
                 {
-                    Id = (int) reader["VideosId"],
+                    Id = (int)reader["VideosId"],
                     VideoName = reader["VideoName"] as string,
                     FilePath = reader["FilePath"] as string,
-                    VideoCat = (int) reader["VideoCat"],
-                    VideoTag = (int) reader["VideoTag"]
+                    VideoCat = (int)reader["VideoCat"],
+                    VideoTag = (int)reader["VideoTag"]
                 };
                 returnValue.Add(vid);
             }
@@ -153,11 +153,11 @@ namespace VideoManagerPlus.Controllers
             {
                 var video = new Video
                 {
-                    Id = (int) reader["VideosId"],
+                    Id = (int)reader["VideosId"],
                     VideoName = reader["VideoName"] as string,
                     FilePath = reader["FilePath"] as string,
-                    VideoCat = (int) reader["VideoCat"],
-                    VideoTag = (int) reader["VideoTag"]
+                    VideoCat = (int)reader["VideoCat"],
+                    VideoTag = (int)reader["VideoTag"]
                 };
                 connection.Close();
                 return video;
@@ -179,7 +179,7 @@ namespace VideoManagerPlus.Controllers
             {
                 var tag = new Tag
                 {
-                    Id = (int) reader["TagId"],
+                    Id = (int)reader["TagId"],
                     TagName = reader["TagName"] as string
                 };
                 returnValue.Add(tag);
@@ -201,7 +201,7 @@ namespace VideoManagerPlus.Controllers
             {
                 var cat = new Cat
                 {
-                    Id = (int) reader["CatId"],
+                    Id = (int)reader["CatId"],
                     CatName = reader["CatName"] as string
                 };
                 returnValue.Add(cat);
