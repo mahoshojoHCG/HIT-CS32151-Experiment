@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
@@ -11,6 +8,11 @@ namespace VideoManagerPlus.Pages
 {
     public class VideoModel : PageModel
     {
+        public VideoModel(IOptions<AppSettings> settings)
+        {
+            Controller = new VideoController(settings);
+        }
+
         public Video CurrentVideo { get; set; }
 
         private VideoController Controller { get; }
@@ -18,12 +20,7 @@ namespace VideoManagerPlus.Pages
         public string TagName { get; set; }
         public string CatName { get; set; }
 
-        public VideoModel(IOptions<AppSettings> settings)
-        {
-            Controller = new VideoController(settings);
-        }
-
-        public async Task<IActionResult> OnGetAsync([FromQuery] int ?id)
+        public async Task<IActionResult> OnGetAsync([FromQuery] int? id)
         {
             var video = await Controller.GetVideo(id);
             if (video == null)

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using FFmpeg.NET;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Options;
 using VideoManagerPlus.Controllers;
 
@@ -13,6 +8,11 @@ namespace VideoManagerPlus.Pages
 {
     public class IndexModel : PageModel
     {
+        public IndexModel(IOptions<AppSettings> settings)
+        {
+            Controller = new VideoController(settings);
+        }
+
         protected VideoController Controller { get; }
 
         public List<Video> AllVideos { get; set; }
@@ -21,11 +21,6 @@ namespace VideoManagerPlus.Pages
 
         public List<Cat> AllCats { get; set; }
 
-
-        public IndexModel(IOptions<AppSettings> settings)
-        {
-            Controller = new VideoController(settings);
-        }
         public virtual async Task OnGetAsync()
         {
             var task1 = Controller.GetAllVideos();

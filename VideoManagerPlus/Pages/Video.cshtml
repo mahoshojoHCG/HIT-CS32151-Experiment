@@ -10,15 +10,16 @@
         if (preferVideo.hasItem('@Model.CurrentVideo.Id')) {
             button.onclick = function() {
                 $('#confirmDeleteModal').modal('show');
-            }
+            };
             button.innerText = "删除收藏";
         } else {
             button.onclick = function() {
                 $('#confirmModal').modal('show');
-            }
+            };
             button.innerText = "收藏视频";
         }
     }
+
     $(document).ready(function() {
         reloadBtn();
     });
@@ -91,9 +92,9 @@
     <div class="row" style="margin-bottom: 10px">
         <div class="col embed-responsive">
             <h2>
-                @Model.CurrentVideo.VideoName  <a asp-page="/edit" asp-route-id="@Model.CurrentVideo.Id" class="far fa-edit"></a>
+                @Model.CurrentVideo.VideoName <a asp-page="/edit" asp-route-id="@Model.CurrentVideo.Id" class="far fa-edit"></a>
             </h2>
-            
+
         </div>
     </div>
     <div class="row" style="margin-bottom: 10px">

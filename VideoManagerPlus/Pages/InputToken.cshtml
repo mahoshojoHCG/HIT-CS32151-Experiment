@@ -1,0 +1,22 @@
+﻿@page
+@model VideoManagerPlus.Pages.InputTokenModel
+@{
+    ViewData["Title"] = "输入访问密钥";
+}
+
+<h2>输入访问密钥</h2>
+<h3 class="text-info">您需要输入一个访问密钥才能进行编辑操作！</h3>
+
+<form class="form-group" method="post">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text">密钥</label>
+        </div>
+        <input required="required" asp-for="Token"/>
+    </div>
+    @if (Model.Error)
+    {
+        <div class="text-danger" style="margin-bottom: 10px">不正确的访问密钥</div>
+    }
+    <button type="submit" class="btn btn-primary">提交</button>
+</form>

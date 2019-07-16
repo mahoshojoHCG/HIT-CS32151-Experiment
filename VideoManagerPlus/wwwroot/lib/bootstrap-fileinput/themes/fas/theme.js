@@ -10,7 +10,7 @@
  * Licensed under the BSD-3-Clause
  * https://github.com/kartik-v/bootstrap-fileinput/blob/master/LICENSE.md
  */
-(function ($) {
+(function($) {
     "use strict";
 
     $.fn.fileinputThemes.fas = {

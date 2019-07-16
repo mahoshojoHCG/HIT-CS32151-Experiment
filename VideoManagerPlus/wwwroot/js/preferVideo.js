@@ -1,6 +1,6 @@
 ﻿
 var preferVideo = {
-    addItem: function (videoId) {
+    addItem: function(videoId) {
         if (!videoId)
             return false;
         var current = docCookies.getItem("preferVideo");
@@ -17,7 +17,7 @@ var preferVideo = {
         return true;
 
     },
-    deleteItem: function (videoId) {
+    deleteItem: function(videoId) {
         if (!videoId)
             return false;
         var current = docCookies.getItem("preferVideo");
@@ -30,7 +30,7 @@ var preferVideo = {
             return true;
         }
     },
-    hasItem: function (videoId) {
+    hasItem: function(videoId) {
         if (!videoId)
             return false;
         var current = docCookies.getItem("preferVideo");

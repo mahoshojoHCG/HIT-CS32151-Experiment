@@ -78,7 +78,9 @@
             </select>
         </div>
         <div class="col-1">
-            <button type="button" id="addCatButton" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+            <button type="button" id="addCatButton" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
     </div>
 
@@ -96,7 +98,9 @@
             </select>
         </div>
         <div class="col-1">
-            <button type="button" id="addTagButton" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+            <button type="button" id="addTagButton" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
     </div>
 
@@ -107,9 +111,8 @@
 </form>
 
 
-
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#fileInput").fileinput({
             'showUploaded': false,
             'theme': 'fa',
@@ -128,40 +131,42 @@
         });
     });
 
-    $('#inputTag').on('input', function () {
-        $("#fileInput").data("fileinput").uploadExtraData = {
-            'videoCat': $('#inputCat').val(),
-            'videoTag': $('#inputTag').val()
-        };
-    });
+    $('#inputTag').on('input',
+        function() {
+            $("#fileInput").data("fileinput").uploadExtraData = {
+                'videoCat': $('#inputCat').val(),
+                'videoTag': $('#inputTag').val()
+            };
+        });
 
-    $('#inputCat').on('input', function () {
-        $("#fileInput").data("fileinput").uploadExtraData = {
-            'videoCat': $('#inputCat').val(),
-            'videoTag': $('#inputTag').val()
-        };
-    });
-    $("#addTagButton").click(function () {
+    $('#inputCat').on('input',
+        function() {
+            $("#fileInput").data("fileinput").uploadExtraData = {
+                'videoCat': $('#inputCat').val(),
+                'videoTag': $('#inputTag').val()
+            };
+        });
+    $("#addTagButton").click(function() {
         $("#newTagModal").modal("show");
     });
-    $("#confirmAddTag").click(function () {
+    $("#confirmAddTag").click(function() {
         if (!$("#newTagName").val())
             return;
         $.post("/api/Video/AddTag", { tagName: $("#newTagName").val() })
-            .done(function (data) {
+            .done(function(data) {
                 $("#inputTag").append(new Option($("#newTagName").val(), data.tagName));
                 $("#newTagModal").modal("hide");
             });
     });
 
-    $("#addCatButton").click(function () {
+    $("#addCatButton").click(function() {
         $("#newCatModal").modal("show");
     });
-    $("#confirmAddCat").click(function () {
+    $("#confirmAddCat").click(function() {
         if (!$("#newCatName").val())
             return;
         $.post("/api/Video/AddCat", { catName: $("#newCatName").val() })
-            .done(function (data) {
+            .done(function(data) {
                 $("#inputCat").append(new Option($("#newCatName").val(), data.catName));
                 $("#newCatModal").modal("hide");
             });

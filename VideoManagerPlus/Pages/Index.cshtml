@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "全部视频";
     ViewData["Current"] = "Index";
-
 }
 
 <div>
@@ -14,7 +13,7 @@
         {
             <div class="col-md-6 col-lg-4 col-xl-3" style="margin-bottom: 10px">
                 <div class="card">
-                    <img class="card-img-top"  src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
+                    <img class="card-img-top" src="/api/Video/GetThumbnail?id=@vid.Id" alt="@vid.VideoName">
                     <div class="card-body">
                         <h5 class="card-title single-line">@vid.VideoName</h5>
                         <a href="/Video?id=@vid.Id" class="btn btn-primary">查看视频</a>

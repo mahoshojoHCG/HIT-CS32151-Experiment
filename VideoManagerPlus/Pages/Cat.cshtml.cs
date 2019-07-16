@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +9,11 @@ namespace VideoManagerPlus.Pages
 {
     public class CatModel : PageModel
     {
+        public CatModel(IOptions<AppSettings> settings)
+        {
+            Controller = new VideoController(settings);
+        }
+
         private VideoController Controller { get; }
 
         public List<Video> AllVideos { get; set; }
@@ -19,19 +22,13 @@ namespace VideoManagerPlus.Pages
 
         public Cat QueryCat { get; set; }
 
-
-        public CatModel(IOptions<AppSettings> settings)
-        {
-            Controller = new VideoController(settings);
-        }
-
         public async Task<IActionResult> OnGetAsync([FromQuery] int? id)
         {
             AllVideos = await Controller.GetAllVideos();
             AllCats = await Controller.GetAllCats();
             QueryCat = AllCats.Find(t => t.Id == id);
             if (id == 0)
-                QueryCat = new Cat { Id = 0, CatName = "未分类" };
+                QueryCat = new Cat {Id = 0, CatName = "未分类"};
             return Page();
         }
     }

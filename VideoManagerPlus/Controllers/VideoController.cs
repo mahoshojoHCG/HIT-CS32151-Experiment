@@ -1,28 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using FFmpeg.NET;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using FFmpeg.NET;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-
 
 namespace VideoManagerPlus.Controllers
 {
     [Route("api/[controller]")]
     public class VideoController : ControllerBase
     {
-        private AppSettings AppSettings { get; }
         public VideoController(IOptions<AppSettings> settings)
         {
             AppSettings = settings.Value;
+        }
+
+        private AppSettings AppSettings { get; }
+
+        public bool IsAllowedEdit()
+        {
+            if (!HttpContext.Session.TryGetValue("allowed", out var val))
+                return false;
+            return Encoding.Default.GetString(val) == "true";
         }
 
         [HttpGet("GetThumbnail")]
@@ -41,13 +48,14 @@ namespace VideoManagerPlus.Controllers
                 connection.Close();
                 return NotFound();
             }
-            var thumbnail = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+
+            var thumbnail = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 $"Video Manager\\temp\\{Guid.NewGuid()}.jpg");
             var input = new MediaFile(path);
             var output = new MediaFile(thumbnail);
-            var ffmpeg = new Engine(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            var ffmpeg = new Engine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Video Manager\\ffmpeg.exe"));
-            var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(10) };
+            var options = new ConversionOptions {Seek = TimeSpan.FromSeconds(10)};
             await ffmpeg.GetThumbnailAsync(input, output, options);
             var buf = System.IO.File.ReadAllBytes(thumbnail);
             System.IO.File.Delete(thumbnail);
@@ -59,6 +67,8 @@ namespace VideoManagerPlus.Controllers
         [HttpPost("AddTag")]
         public async Task<IActionResult> AddNewTag(string tagName)
         {
+            if (!IsAllowedEdit())
+                return Forbid();
             if (string.IsNullOrEmpty(tagName) || tagName == "无标签")
                 return BadRequest();
             var connection = new SqlConnection(AppSettings.SqlConnectionString);
@@ -70,6 +80,7 @@ namespace VideoManagerPlus.Controllers
                 connection.Close();
                 return BadRequest();
             }
+
             var insert = new SqlCommand("INSERT INTO[dbo].[Tag]([TagName]) Values(@TagName)", connection);
             insert.Parameters.Add("@TagName", SqlDbType.NVarChar).Value = tagName;
             await insert.ExecuteNonQueryAsync();
@@ -82,6 +93,8 @@ namespace VideoManagerPlus.Controllers
         [HttpPost("AddCat")]
         public async Task<IActionResult> AddNewCat(string catName)
         {
+            if (!IsAllowedEdit())
+                return Forbid();
             if (string.IsNullOrEmpty(catName) || catName == "未分类")
                 return BadRequest();
             var connection = new SqlConnection(AppSettings.SqlConnectionString);
@@ -93,13 +106,15 @@ namespace VideoManagerPlus.Controllers
                 connection.Close();
                 return BadRequest();
             }
+
             var insert = new SqlCommand("INSERT INTO[dbo].[Cat]([CatName]) Values(@CatName)", connection);
             insert.Parameters.Add("@CatName", SqlDbType.NVarChar).Value = catName;
             await insert.ExecuteNonQueryAsync();
-            var response = JsonConvert.SerializeObject(new { catId = await fetch.ExecuteScalarAsync() });
+            var response = JsonConvert.SerializeObject(new {catId = await fetch.ExecuteScalarAsync()});
             connection.Close();
             return Ok(response);
         }
+
         public async Task<List<Video>> GetAllVideos()
         {
             var returnValue = new List<Video>();
@@ -111,11 +126,11 @@ namespace VideoManagerPlus.Controllers
             {
                 var vid = new Video
                 {
-                    Id = (int)reader["VideosId"],
+                    Id = (int) reader["VideosId"],
                     VideoName = reader["VideoName"] as string,
                     FilePath = reader["FilePath"] as string,
-                    VideoCat = (int)reader["VideoCat"],
-                    VideoTag = (int)reader["VideoTag"]
+                    VideoCat = (int) reader["VideoCat"],
+                    VideoTag = (int) reader["VideoTag"]
                 };
                 returnValue.Add(vid);
             }
@@ -138,11 +153,11 @@ namespace VideoManagerPlus.Controllers
             {
                 var video = new Video
                 {
-                    Id = (int)reader["VideosId"],
+                    Id = (int) reader["VideosId"],
                     VideoName = reader["VideoName"] as string,
                     FilePath = reader["FilePath"] as string,
-                    VideoCat = (int)reader["VideoCat"],
-                    VideoTag = (int)reader["VideoTag"]
+                    VideoCat = (int) reader["VideoCat"],
+                    VideoTag = (int) reader["VideoTag"]
                 };
                 connection.Close();
                 return video;
@@ -150,7 +165,6 @@ namespace VideoManagerPlus.Controllers
 
             connection.Close();
             return null;
-
         }
 
         [HttpGet("GetTags")]
@@ -165,7 +179,7 @@ namespace VideoManagerPlus.Controllers
             {
                 var tag = new Tag
                 {
-                    Id = (int)reader["TagId"],
+                    Id = (int) reader["TagId"],
                     TagName = reader["TagName"] as string
                 };
                 returnValue.Add(tag);
@@ -187,7 +201,7 @@ namespace VideoManagerPlus.Controllers
             {
                 var cat = new Cat
                 {
-                    Id = (int)reader["CatId"],
+                    Id = (int) reader["CatId"],
                     CatName = reader["CatName"] as string
                 };
                 returnValue.Add(cat);
@@ -198,16 +212,14 @@ namespace VideoManagerPlus.Controllers
         }
 
         [HttpGet("GetVideoFile")]
-        public async Task<IActionResult> GetVideoFile([FromQuery]int? id)
+        public async Task<IActionResult> GetVideoFile([FromQuery] int? id)
         {
             var video = await GetVideo(id);
             if (video == null || !System.IO.File.Exists(video.FilePath))
                 return NotFound();
             var provider = new FileExtensionContentTypeProvider();
             if (!provider.TryGetContentType(Path.GetExtension(video.FilePath), out var contentType))
-            {
                 contentType = provider.Mappings[".mp4"];
-            }
             var result = File(System.IO.File.OpenRead(video.FilePath), contentType, Path.GetFileName(video.FilePath));
             result.EnableRangeProcessing = true;
 
@@ -244,6 +256,8 @@ namespace VideoManagerPlus.Controllers
         [RequestSizeLimit(long.MaxValue)]
         public async Task<IActionResult> Upload(IFormFile fileInput, int? videoCat, int? videoTag)
         {
+            if (!IsAllowedEdit())
+                return Forbid();
             if (fileInput == null || fileInput.Length == 0)
                 return BadRequest();
 
@@ -261,6 +275,7 @@ namespace VideoManagerPlus.Controllers
             {
                 ext = "mp4";
             }
+
             var savePath = Path.Combine(
                 Directory.GetCurrentDirectory(), "upload",
                 $"{guid}.{ext}");
@@ -268,6 +283,7 @@ namespace VideoManagerPlus.Controllers
             {
                 await fileInput.CopyToAsync(stream);
             }
+
             await connectTask;
             var command = new SqlCommand(
                 "INSERT INTO [dbo].[Videos] ([FilePath], [VideoName], [VideoTag], [VideoCat]) VALUES (@FilePath, @VideoName, @VideoTag, @VideoCat)",

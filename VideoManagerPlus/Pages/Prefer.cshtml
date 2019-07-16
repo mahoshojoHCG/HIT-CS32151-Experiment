@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "收藏视频";
     ViewData["Current"] = "Prefer";
-
 }
 
 <div id="modals">
@@ -79,7 +78,7 @@
 <script type="text/javascript">
     function confirmRemovePrefer(videoId, videoName) {
         document.getElementById("confirmDeleteContent").innerText = "是否将" + videoName + "从收藏中删除？";
-        $('#confirmDeleteOkButton').click(function () {
+        $('#confirmDeleteOkButton').click(function() {
             $('#confirmDeleteModal').modal('hide');
             deletePrefer(videoId);
         });
